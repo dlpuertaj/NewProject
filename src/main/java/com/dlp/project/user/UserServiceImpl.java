@@ -2,9 +2,9 @@ package com.dlp.project.user;
 
 import com.dlp.project.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -31,12 +31,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void DeleteUser(Integer userId) {
+    public void deleteUser(Integer userId) {
         // Not done yet
     }
 
     @Override
     public void updateUser(User user) {
         // Not done yet
+    }
+
+    @Override
+    public List<User> findAllUsers() {
+        return (List<User>) userRepository.findAll();
     }
 }

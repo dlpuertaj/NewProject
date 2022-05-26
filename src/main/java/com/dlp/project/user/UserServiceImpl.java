@@ -32,7 +32,16 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void deleteUser(Integer userId) {
-        // Not done yet
+        // Find user
+        Optional<User> userFound = userRepository.findById(userId);
+
+        try {
+            User user = userFound.orElseThrow(NullPointerException::new);
+            userRepository.delete(user);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

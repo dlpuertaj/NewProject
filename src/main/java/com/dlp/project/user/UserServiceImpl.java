@@ -46,7 +46,16 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void updateUser(User user) {
-        // Not done yet
+        Optional<User> userFound = userRepository.findById(user.getId());
+
+        try {
+            User userToUpdate = userFound.orElseThrow(NullPointerException::new);
+            userToUpdate.setUsername(user.getUsername());
+            userToUpdate.setPassword(user.getPassword());
+            userRepository.save(user);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

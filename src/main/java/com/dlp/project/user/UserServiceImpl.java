@@ -26,8 +26,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Integer saveNewUser(User newUser) {
-        return userRepository.save(newUser).getId();
+    public Integer saveNewUser(UserDTO newUser) {
+        return userRepository.save(User.builder()
+                                       .username(newUser.getUsername())
+                                       .password(newUser.getPassword())
+                                       .build()).getId();
     }
 
     @Override
@@ -45,14 +48,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(UserDTO user) {
         Optional<User> userFound = userRepository.findById(user.getId());
 
         try {
             User userToUpdate = userFound.orElseThrow(NullPointerException::new);
             userToUpdate.setUsername(user.getUsername());
             userToUpdate.setPassword(user.getPassword());
-            userRepository.save(user);
+            userRepository.save(userToUpdate);
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

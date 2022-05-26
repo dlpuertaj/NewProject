@@ -5,8 +5,8 @@ import java.util.List;
 
 public interface UserService {
     User findUserById(Integer userId);
-    Integer saveNewUser(User newUser);
+    Integer saveNewUser(UserDTO newUser);
     void deleteUser(Integer userId);
-    void updateUser(User user);
+    void updateUser(UserDTO user);
     List<User> findAllUsers();
 }

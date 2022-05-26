@@ -14,12 +14,7 @@ public class UserController {
 
     @PostMapping
     public void saveUser(@RequestBody UserDTO user){
-        User newUser = User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .build();
-
-        userService.saveNewUser(newUser);
+        userService.saveNewUser(user);
     }
 
     @GetMapping("{userId}")
@@ -30,5 +25,15 @@ public class UserController {
     @GetMapping
     public List<User> getUsers(){
         return userService.findAllUsers();
+    }
+
+    @DeleteMapping(path = "{userId}")
+    public void deleteUser(Integer userId){
+        userService.deleteUser(userId);
+    }
+
+    @PutMapping
+    public void updateUser(UserDTO user){
+        userService.updateUser(user);
     }
 }

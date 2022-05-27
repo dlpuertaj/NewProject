@@ -6,25 +6,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="api/v1/user")
+@RequestMapping(path="api/v1/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    public void saveUser(@RequestBody UserDTO user){
-        userService.saveNewUser(user);
+    @GetMapping
+    public List<User> getAllUsers(){
+        return userService.findAllUsers();
     }
 
-    @GetMapping("{userId}")
+    @GetMapping("/{userId}")
     public User getUserById(@PathVariable Integer userId){
         return userService.findUserById(userId);
     }
 
-    @GetMapping
-    public List<User> getUsers(){
-        return userService.findAllUsers();
+    @PostMapping
+    public void saveNewUser(@RequestBody UserDTO user){
+        userService.saveNewUser(user);
     }
 
     @DeleteMapping(path = "{userId}")
@@ -32,8 +32,8 @@ public class UserController {
         userService.deleteUser(userId);
     }
 
-    @PutMapping
-    public void updateUser(UserDTO user){
+    @PutMapping("/{userId}")
+    public void updateUser(@PathVariable Integer userId, @RequestBody UserDTO user){
         userService.updateUser(user);
     }
 }

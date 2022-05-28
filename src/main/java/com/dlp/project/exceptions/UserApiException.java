@@ -9,7 +9,7 @@ public class UserApiException extends RuntimeException{
 
     private final String exceptionMessage;
 
-    UserApiException(String exceptionMessage){
+    public UserApiException(String exceptionMessage){
         super(exceptionMessage);
         this.exceptionMessage = exceptionMessage;
     }

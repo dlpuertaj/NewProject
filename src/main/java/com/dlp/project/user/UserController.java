@@ -1,8 +1,12 @@
 package com.dlp.project.user;
 
+import com.dlp.project.api.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,8 +22,10 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable Integer userId){
-        return userService.findUserById(userId);
+    public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable Integer userId){
+        ApiResponse<User> responseBody = new ApiResponse<>(userService.findUserById(userId),
+                "User fetched successfully",new ArrayList<>());
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
     @PostMapping

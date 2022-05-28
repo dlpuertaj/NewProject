@@ -1,6 +1,6 @@
 package com.dlp.project.user;
 
-import com.dlp.project.exceptions.UserNotFoundException;
+import com.dlp.project.exceptions.UserApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +17,8 @@ public class UserServiceImpl implements UserService{
     public User findUserById(Integer userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         try {
-            return optionalUser.orElseThrow(UserNotFoundException::new);
-        } catch (UserNotFoundException e) {
+            return optionalUser.orElseThrow(() -> new UserApiException("User not found"));
+        } catch (UserApiException e) {
             e.printStackTrace();
         }
 
@@ -63,6 +63,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<User> findAllUsers() {
-        return (List<User>) userRepository.findAll();
+        return userRepository.findAll();
     }
 }

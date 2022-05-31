@@ -1,6 +1,7 @@
 package com.dlp.project.user;
 
 import com.dlp.project.api.ApiResponse;
+import com.dlp.project.exceptions.UserApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,36 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    public List<User> getAllUsers(){
-        return userService.findAllUsers();
+    public ResponseEntity<ApiResponse<List<User>>> getAllUsers(){
+        ApiResponse<List<User>> responseBody;
+        try {
+            List<User> users =  userService.findAllUsers();
+            responseBody = new ApiResponse<>(users,"Users found successfuly",new ArrayList<>());
+        }catch(UserApiException e){
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getExceptionMessage());
+            ApiResponse<List<User>> errorResponse = new ApiResponse<>(new ArrayList<>(),
+                                                                      e.getMessage(),
+                                                                      errorList);
+            return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable Integer userId){
-        ApiResponse<User> responseBody = new ApiResponse<>(userService.findUserById(userId),
-                "User fetched successfully",new ArrayList<>());
+    public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable Integer userId) {
+        ApiResponse<User> responseBody;
+        try {
+            User userFound = userService.findUserById(userId);
+            responseBody = new ApiResponse<>(userFound,
+                    "User fetched successfully", new ArrayList<>());
+
+        } catch (UserApiException e) {
+            List<String> errorList = new ArrayList<>();
+            errorList.add(e.getExceptionMessage());
+            ApiResponse<User> errorResponse = new ApiResponse<>(new User(),e.getMessage(),errorList);
+            return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 

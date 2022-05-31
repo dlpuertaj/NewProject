@@ -1,11 +1,13 @@
 package com.dlp.project.user;
 
 
+import com.dlp.project.exceptions.UserApiException;
+
 import java.util.List;
 
 public interface UserService {
-    User findUserById(Integer userId);
-    Integer saveNewUser(UserDTO newUser);
+    User findUserById(Integer userId) throws UserApiException;
+    void saveNewUser(UserDTO newUser);
     void deleteUser(Integer userId);
     void updateUser(UserDTO user);
     List<User> findAllUsers();

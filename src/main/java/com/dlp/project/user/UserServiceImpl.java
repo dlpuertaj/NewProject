@@ -14,23 +14,17 @@ public class UserServiceImpl implements UserService{
     UserRepository userRepository;
 
     @Override
-    public User findUserById(Integer userId) {
+    public User findUserById(Integer userId) throws UserApiException{
         Optional<User> optionalUser = userRepository.findById(userId);
-        try {
             return optionalUser.orElseThrow(() -> new UserApiException("User not found"));
-        } catch (UserApiException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     @Override
-    public Integer saveNewUser(UserDTO newUser) {
-        return userRepository.save(User.builder()
-                                       .username(newUser.getUsername())
-                                       .password(newUser.getPassword())
-                                       .build()).getId();
+    public void saveNewUser(UserDTO newUser) {
+        userRepository.save(User.builder()
+                .username(newUser.getUsername())
+                .password(newUser.getPassword())
+                .build());
     }
 
     @Override

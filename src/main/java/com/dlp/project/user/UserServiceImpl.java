@@ -23,6 +23,12 @@ public class UserServiceImpl implements UserService{
     public Integer saveNewUser(UserDTO newUser) {
         try{
 
+            Optional<User> userExists = userRepository.findUserByUsername(newUser.getUsername());
+
+            userExists.ifPresent(user -> {
+                throw new UserApiException("User already exists!");
+            });
+
             return userRepository.save(User.builder()
                     .username(newUser.getUsername())
                     .password(newUser.getPassword())
@@ -41,7 +47,7 @@ public class UserServiceImpl implements UserService{
             User user = userFound.orElseThrow(NullPointerException::new);
             userRepository.delete(user);
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            throw new UserApiException(e.getMessage());
         }
 
     }
@@ -56,7 +62,7 @@ public class UserServiceImpl implements UserService{
             userToUpdate.setPassword(user.getPassword());
             userRepository.save(userToUpdate);
         } catch (NullPointerException e) {
-            e.printStackTrace();
+            throw new UserApiException(e.getMessage());
         }
     }
 

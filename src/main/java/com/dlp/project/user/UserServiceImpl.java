@@ -20,11 +20,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void saveNewUser(UserDTO newUser) {
-        userRepository.save(User.builder()
+    public Integer saveNewUser(UserDTO newUser) {
+        return userRepository.save(User.builder()
                 .username(newUser.getUsername())
                 .password(newUser.getPassword())
-                .build());
+                .build()).getId();
     }
 
     @Override

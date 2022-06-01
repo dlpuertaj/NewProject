@@ -45,8 +45,16 @@ public class UserController {
     }
 
     @PostMapping
-    public void saveNewUser(@RequestBody UserDTO user){
-        userService.saveNewUser(user);
+    public ResponseEntity<ApiResponse<Integer>> saveNewUser(@RequestBody UserDTO user){
+        ApiResponse<Integer> responseBody;
+        try {
+            Integer newId = userService.saveNewUser(user);
+            responseBody = new ApiResponse<>(newId,"New User saved successfully");
+        }catch(UserApiException e){
+            ApiResponse<Integer> errorResponse = new ApiResponse<>(-1,e.getMessage());
+            return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(responseBody, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{userId}")

@@ -58,8 +58,18 @@ public class UserController {
     }
 
     @DeleteMapping(path = "{userId}")
-    public void deleteUser(Integer userId){
-        userService.deleteUser(userId);
+    public ResponseEntity<ApiResponse<Integer>> deleteUser(Integer userId){
+        ApiResponse<Integer> responseBody;
+
+        try {
+            userService.deleteUser(userId);
+            responseBody = new ApiResponse<>(userId,"User "+ userId + " deleted successfully");
+        }catch(UserApiException e){
+            ApiResponse<Integer> errorResponse = new ApiResponse<>(-1,e.getMessage());
+            return new ResponseEntity<>(errorResponse,HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(responseBody,HttpStatus.OK);
     }
 
     @PutMapping("/{userId}")

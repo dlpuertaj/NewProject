@@ -5,14 +5,11 @@ server:
 
 spring:
   datasource:
-    password: password
-    url: jdbc:mysql://127.0.0.1:13306/pockets_db
+    password:
+    url: jdbc:h2:mem:pockets_db
+    driverClassName: org.h2.Driver
     username: root
   jpa:
-    hibernate:
-      ddl-auto: create-drop
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
-    show-sql: true
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console.enabled: true

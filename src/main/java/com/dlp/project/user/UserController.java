@@ -22,7 +22,7 @@ public class UserController {
         ApiResponse<List<User>> responseBody;
         try {
             List<User> users =  userService.findAllUsers();
-            responseBody = new ApiResponse<>(users,"Users found successfuly",new ArrayList<>());
+            responseBody = new ApiResponse<>(users,"Users found successfully",new ArrayList<>());
         }catch(UserApiException e){
             List<String> errorList = new ArrayList<>();
             errorList.add(e.getExceptionMessage());

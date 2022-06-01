@@ -62,6 +62,10 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<User> findAllUsers() {
-        return userRepository.findAll();
+        try {
+            return userRepository.findAll();
+        }catch(Exception e){
+            throw new UserApiException(e.getMessage());
+        }
     }
 }

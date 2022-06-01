@@ -15,5 +15,4 @@ import java.util.List;
 public class ApiResponse<T> {
     private T data;
     private String message;
-    private List<String> errors;
 }

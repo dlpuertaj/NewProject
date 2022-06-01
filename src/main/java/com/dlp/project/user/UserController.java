@@ -22,13 +22,9 @@ public class UserController {
         ApiResponse<List<User>> responseBody;
         try {
             List<User> users =  userService.findAllUsers();
-            responseBody = new ApiResponse<>(users,"Users found successfully",new ArrayList<>());
+            responseBody = new ApiResponse<>(users,"Users found successfully");
         }catch(UserApiException e){
-            List<String> errorList = new ArrayList<>();
-            errorList.add(e.getExceptionMessage());
-            ApiResponse<List<User>> errorResponse = new ApiResponse<>(new ArrayList<>(),
-                                                                      e.getMessage(),
-                                                                      errorList);
+            ApiResponse<List<User>> errorResponse = new ApiResponse<>(new ArrayList<>(),e.getMessage());
             return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(responseBody, HttpStatus.OK);
@@ -39,13 +35,10 @@ public class UserController {
         ApiResponse<User> responseBody;
         try {
             User userFound = userService.findUserById(userId);
-            responseBody = new ApiResponse<>(userFound,
-                    "User fetched successfully", new ArrayList<>());
+            responseBody = new ApiResponse<>(userFound,"User fetched successfully");
 
         } catch (UserApiException e) {
-            List<String> errorList = new ArrayList<>();
-            errorList.add(e.getExceptionMessage());
-            ApiResponse<User> errorResponse = new ApiResponse<>(new User(),e.getMessage(),errorList);
+            ApiResponse<User> errorResponse = new ApiResponse<>(new User(),e.getMessage());
             return new ResponseEntity<>(errorResponse,HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(responseBody, HttpStatus.OK);

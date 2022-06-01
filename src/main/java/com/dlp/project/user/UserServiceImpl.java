@@ -21,10 +21,15 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public Integer saveNewUser(UserDTO newUser) {
-        return userRepository.save(User.builder()
-                .username(newUser.getUsername())
-                .password(newUser.getPassword())
-                .build()).getId();
+        try{
+
+            return userRepository.save(User.builder()
+                    .username(newUser.getUsername())
+                    .password(newUser.getPassword())
+                    .build()).getId();
+        }catch(Exception e){
+            throw new UserApiException(e.getMessage());
+        }
     }
 
     @Override

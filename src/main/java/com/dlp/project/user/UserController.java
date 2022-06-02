@@ -22,6 +22,10 @@ public class UserController {
         ApiResponse<List<User>> responseBody;
         try {
             List<User> users =  userService.findAllUsers();
+            if(users.isEmpty()){
+                responseBody = new ApiResponse<>(new ArrayList<>(), "No users found");
+                return new ResponseEntity<>(responseBody,HttpStatus.OK);
+            }
             responseBody = new ApiResponse<>(users,"Users found successfully");
         }catch(UserApiException e){
             ApiResponse<List<User>> errorResponse = new ApiResponse<>(new ArrayList<>(),e.getMessage());
